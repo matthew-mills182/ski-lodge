@@ -10,6 +10,26 @@ def load_people():
     with open('people.csv', 'r') as csvf:
         reader = csv.DictReader(csvf)
         return list(reader)
+    
+def load_miscellaneous():
+    with open("miscellaneous.csv", "r") as csvf:
+        reader = csv.DictReader(csvf)
+        return list(reader)
+
+def load_poles():
+    with open("poles.csv", "r") as csvf:
+        reader = csv.DictReader(csvf)
+        return list(reader)
+
+def load_boots():
+    with open("boots.csv", "r") as  csvf:
+        reader = csv.DictReader(csvf)
+        return list(reader)
+    
+def load_skis():
+    with open("skis.csv", "r") as  csvf:
+        reader = csv.DictReader(csvf)
+        return list(reader)
 
 @app.route("/")
 def render_index():
@@ -22,5 +42,9 @@ def render_people():
 
 @app.route("/equipment/")
 def render_equipment():
-    return render_template("equipment.html")
+    miscellaneous = load_miscellaneous()
+    poles = load_poles()
+    skis = load_skis()
+    boots = load_boots()
+    return render_template("equipment.html",miscellaneous=miscellaneous, poles=poles, boots = boots, skis = skis)
 

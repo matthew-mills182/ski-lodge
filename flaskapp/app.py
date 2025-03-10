@@ -9,7 +9,7 @@ app = Flask(__name__)
 def load_people():
     with open('people.csv', 'r') as csvf:
         reader = csv.DictReader(csvf)
-    return list(reader)
+        return list(reader)
 
 @app.route("/")
 def render_index():
@@ -17,7 +17,8 @@ def render_index():
 
 @app.route("/people/")
 def render_people():
-    return render_template("people.html")
+    people = load_people()
+    return render_template("people.html", people = people)
 
 @app.route("/equipment/")
 def render_equipment():

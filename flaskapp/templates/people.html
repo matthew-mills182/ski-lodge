@@ -3,7 +3,28 @@
 {% block title %}People{% endblock %}
 
 {% block content %}
-
+<h2>People</h2>
+<br>
+<p><a href="{{ url_for('render_index') }}">Home</a> > People</p>
+<hr>
+<table class = "table table-striped">
+    <thead>
+        <tr>
+            {% for column in people[0].keys() %}
+            <th>{{ column }}</th>
+            {% endfor %}
+        </tr>
+    </thead>
+    <tbody>
+        {% for person in people %}
+        <tr>
+            {% for value in person.values() %}
+                <td>{{ value }}</td>
+            {% endfor %}
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
 
 
 

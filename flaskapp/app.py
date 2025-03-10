@@ -23,3 +23,4 @@ def render_people():
 @app.route("/equipment/")
 def render_equipment():
     return render_template("equipment.html")
+

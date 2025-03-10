@@ -3,5 +3,86 @@
 {% block title %}Equipment{% endblock %}
 
 {% block content %}
+<h2>Equipment</h2>
+<br>
+<p><a href="{{ url_for('render_index') }}">Home</a> > Equipment</p>
+<hr>
+
+<h3>Boots</h3>
+<table class="table table-striped mt-3">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Available #</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for boot in boots %}
+        <tr>
+            <td>{{ boot.name }}</td>
+            <td>{{ boot.quantity }}/{{ boot.max_quantity }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+<br>
+
+<h3>Skis</h3>
+<table class="table table-striped mt-3">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Available #</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for ski in skis %}
+        <tr>
+            <td>{{ ski.name }}</td>
+            <td>{{ ski.quantity }}/{{ ski.max_quantity }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+<br>
+
+<h3>Poles</h3>
+<table class="table table-striped mt-3">
+    <thead>
+        <tr>
+            <th>Size</th>
+            <th>Available #</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for pole in poles %}
+        <tr>
+            <td>{{ pole.Size }}</td>
+            <td>{{ pole.quantity }}/{{ pole.max_quantity }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+<br>
+
+<h3>Miscellaneous</h3>
+<table class="table table-striped mt-3">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Available #</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for item in miscellaneous %}
+        <tr>
+            <td>{{ item.name }}</td>
+            <td>{{ item.quantity }}/{{ item.max_quantity }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+<br>
+
 
 {%endblock%}

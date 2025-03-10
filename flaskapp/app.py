@@ -12,7 +12,7 @@ def load_people():
         return list(reader)
     
 def load_miscellaneous():
-    with open("miscellaneous.csv", "r") as csvf:
+    with open("misc.csv", "r") as csvf:
         reader = csv.DictReader(csvf)
         return list(reader)
 

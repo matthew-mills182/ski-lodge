@@ -10,7 +10,7 @@
 <table class = "table table-striped">
     <thead>
         <tr>
-            {% for column in people[0].keys() %}
+            {% for column in people[1].keys() %}
             <th>{{ column }}</th>
             {% endfor %}
         </tr>
@@ -18,8 +18,16 @@
     <tbody>
         {% for person in people %}
         <tr>
-            {% for value in person.values() %}
-                <td>{{ value }}</td>
+            {% for column in person.keys() %}
+                {% if column == "Name" %}  
+                    <td>
+                        <div class="card h-100 hvr-grow">
+                        <a href="{{ url_for('render_id') }}" class="btn btn-light">{{ person[column] }}</a>
+                        </div>
+                    </td>
+                {% else %}
+                    <td>{{ person[column] }}</td>
+                {% endif %}
             {% endfor %}
         </tr>
         {% endfor %}

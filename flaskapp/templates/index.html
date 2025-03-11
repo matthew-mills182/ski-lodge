@@ -3,19 +3,23 @@
 {% block title %}Home{% endblock %}
 
 {% block content %}
-<h1 class="display-4">Hello Flask!</h1>
+<h1 class="display-4">Dashboard</h1>
 
-<p class="lead">This is a template to get you spinning up with <code>flask</code> and <code>Bootstrap</code>.</p>
+<p class="lead">The number of guests on the slopes or in the lodge will be updated here as people check in and out</p>
 
-<img class="img-fluid" src="{{ url_for('static', filename='images/doing-great.jpg') }}"
-    alt="A giant person blocks a little guy from arrows. The giant says 'you're doing great and im so freaken proud of you', the little guy is labeled 'undergrads'">
+<div class="card h-100 hvr-grow" style="width: 18rem;"> <!-- This is the correct card wrapper -->
+    <img class="card-img-top" src="{{ url_for('static', filename= 'images/ski-city-images/ski-slope.jpg') }}">
+    <div class="card-body">
+        <h4 class="card-title">On the Slopes: {{0}}</h4>
+    </div>
+</div>
+<div class="card h-100 hvr-grow" style="width: 18rem;"> <!-- This is the correct card wrapper -->
+    <img class="card-img-top" src="{{ url_for('static', filename= 'images/ski-city-images/hot-chocolate.jpg') }}">
+    <div class="card-body">
+        <h4 class="card-title">In the lodge: {{0}}</h4>
+    </div>
+</div>
 
-<p>
-    This is based on the Bootstrap "<em>Sticky Footer Navbar Template</em>", don't forget to <a
-        href="https://getbootstrap.com/docs/5.3/examples/sticky-footer-navbar/">skim how the example works</a> in the
-    documentation!
-</p>
-
-<p>Remember to <em>read your README</em>, it has lots of hints that will help you throughout the semester.</p>
+<hr>
 
 {% endblock %}

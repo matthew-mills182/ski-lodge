@@ -40,6 +40,10 @@ def render_people():
     people = load_people()
     return render_template("people.html", people = people)
 
+@app.route('/people/person_id/')
+def render_id(): 
+    return render_template('person.html')
+
 @app.route("/equipment/")
 def render_equipment():
     miscellaneous = load_miscellaneous()

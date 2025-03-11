@@ -4,21 +4,32 @@
 
 {% block content %}
 
-<h1>{{ people['Name'] }}</h1>
-<p><a href="{{ url_for('render_index') }}">Home</a> > <a href="{{ url_for('render_people') }}">People</a> > User </p>
-<hr>
-<!-- Table for displaying person's details -->
-<table class="table table-bordered table-striped">
+<div class="container my-5"> <!-- Container with top and bottom margin -->
+    <!-- Card for the person details -->
+    <div class="card shadow-lg p-4 mb-4 rounded">
+        <h1 class="display-4 mb-4 text-center">{{ people['Name'] }}</h1>
+        <p class="lead text-center mb-4">
+            <a href="{{ url_for('render_index') }}" class="btn btn-link">Home</a> >
+            <a href="{{ url_for('render_people') }}" class="btn btn-link">People</a> > {{people['Name']}}
+        </p>
+        <hr class="my-4"> <!-- Horizontal rule with spacing -->
 
-    <tbody>
-        {% for key, value in people.items() %}
-            <tr>
-                <td><strong>{{ key }}</strong></td>
-                <td>{{ value }}</td>
-            </tr>
-        {% endfor %}
-    </tbody>
-</table>
+        <!-- Table inside a card for person details -->
+        <div class="table-responsive">
+            <table class="table table-bordered table-striped table-hover table-sm">
+
+                <tbody>
+                    {% for key, value in people.items() %}
+                        <tr>
+                            <td class="py-3 px-4"><strong>{{ key }}</strong></td>
+                            <td class="py-3 px-4">{{ value }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
 
 
 

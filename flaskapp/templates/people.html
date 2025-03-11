@@ -22,7 +22,8 @@
                 {% if column == "Name" %}  
                     <td>
                         <div class="card h-100 hvr-grow">
-                        <a href="{{ url_for('render_id') }}" class="btn btn-light">{{ person[column] }}</a>
+                            <a href="{{ url_for('render_id', person_id = person['Name']) }}" class="btn btn-light">{{ person[column] }}</a>
+
                         </div>
                     </td>
                 {% else %}

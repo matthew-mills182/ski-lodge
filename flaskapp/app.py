@@ -10,7 +10,15 @@ def load_people():
     with open('people.csv', 'r') as csvf:
         reader = csv.DictReader(csvf)
         return list(reader)
-    
+
+def load_people_id():
+    with open('people.csv', 'r') as csvf:
+        people = {}
+        for row in csv.DictReader(csvf):
+            people[row['Name']] = row
+        return people
+     
+
 def load_miscellaneous():
     with open("misc.csv", "r") as csvf:
         reader = csv.DictReader(csvf)
@@ -40,9 +48,11 @@ def render_people():
     people = load_people()
     return render_template("people.html", people = people)
 
-@app.route('/people/person_id/')
-def render_id(): 
-    return render_template('person.html')
+@app.route('/people/<person_id>/')
+def render_id(person_id): 
+    all_people = load_people_id()
+    specific_person = all_people[person_id]
+    return render_template('person.html', people = specific_person)
 
 @app.route("/equipment/")
 def render_equipment():

@@ -7,6 +7,29 @@
 <br>
 <p><a href="{{ url_for('render_index') }}">Home</a> > Equipment</p>
 <hr>
+<div class="card h-100 hvr-grow">
+    <a class = "btn btn-dark" href = "{{ url_for('handle_new_equipment') }}">Add New Equipment</a>
+</div>
+<br>
+<br>
+<h3>Miscellaneous</h3>
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Size</th>
+            <th>Available #</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for item in miscellaneous %}
+        <tr>
+            <td>{{ item.name }}</td>
+            <td>{{ item.quantity }}/{{ item.max_quantity }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+<br>
 
 <h3>Boots</h3>
 <table class="table table-striped">

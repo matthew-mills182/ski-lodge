@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block title %}Add New Equipment{% endblock %}
+
+{% block content %}
+<h2>Add New Equipment</h2>
+<br>
+<p><a href="{{ url_for('render_index') }}">Home</a> > <a href="{{ url_for('render_equipment') }}">Equipment</a> > Add New Equipment</p>
+<hr>
+
+<form action="{{ url_for('handle_new_equipment') }}" method="POST" class="needs-validation" novalidate>
+    <div class="mb-3">
+        <label for="name" class="form-label">Equipment Name</label>
+        <input type="text" id="name" name="name" class="form-control" required>
+    </div>
+
+    <div class="mb-3">
+        <label for="number" class="form-label">Max Quantity</label>
+        <input type="number" id="number" name="number" class="form-control" required>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Submit</button>
+</form>
+
+{% endblock %}

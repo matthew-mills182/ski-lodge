@@ -21,16 +21,15 @@
     <tbody>
         {% for person in people %}
         <tr>
-            {% for column in person.keys() %}
-                {% if column == "Name" %}  
+            {% for column, value in person.items() %}
+                {% if column == "name" %}
                     <td>
-                        <div class="card h-100 hvr-grow">
-                            <a href="{{ url_for('render_id', person_id = person['Name']) }}" class="btn btn-light">{{ person[column] }}</a>
-
-                        </div>
+                        <a href="{{ url_for('render_id', person_id=person['id']) }}" class="btn btn-light">
+                            {{ value }}
+                        </a>
                     </td>
                 {% else %}
-                    <td>{{ person[column] }}</td>
+                    <td>{{ value }}</td>
                 {% endif %}
             {% endfor %}
         </tr>
@@ -38,6 +37,4 @@
     </tbody>
 </table>
 
-
-
-{% endblock%}
+{% endblock %}

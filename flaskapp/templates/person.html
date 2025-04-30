@@ -7,17 +7,17 @@
 <div class="container my-5"> <!-- Container with top and bottom margin -->
     <!-- Card for the person details -->
     <div class="card shadow-lg p-4 mb-4 rounded">
-        <h1 class="display-4 mb-4 text-center">{{ people['Name'] }}</h1>
+        <h1 class="display-4 mb-4 text-center">{{ people['name'] }}</h1>
+
         <p class="lead text-center mb-4">
             <a href="{{ url_for('render_index') }}" class="btn btn-link">Home</a> >
-            <a href="{{ url_for('render_people') }}" class="btn btn-link">People</a> > {{people['Name']}}
+            <a href="{{ url_for('render_people') }}" class="btn btn-link">People</a> > {{ people['name'] }}
         </p>
         <hr class="my-4"> <!-- Horizontal rule with spacing -->
 
         <!-- Table inside a card for person details -->
         <div class="table-responsive">
             <table class="table table-bordered table-striped table-hover table-sm">
-
                 <tbody>
                     {% for key, value in people.items() %}
                         <tr>
@@ -28,12 +28,12 @@
                 </tbody>
             </table>
         </div>
+
+        <!-- Button to edit person -->
+        <div class="text-center mt-4">
+            <a href="{{ url_for('edit_person', person_id=people['id']) }}" class="btn btn-primary">Edit Person</a>
+        </div>
     </div>
 </div>
 
-
-
-
-
-
-{% endblock%}
+{% endblock %}

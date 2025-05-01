@@ -17,16 +17,33 @@
 
         <!-- Table inside a card for person details -->
         <div class="table-responsive">
-            <table class="table table-bordered table-striped table-hover table-sm">
-                <tbody>
-                    {% for key, value in people.items() %}
-                        <tr>
-                            <td class="py-3 px-4"><strong>{{ key }}</strong></td>
-                            <td class="py-3 px-4">{{ value }}</td>
-                        </tr>
-                    {% endfor %}
-                </tbody>
+            <table class="table">
+                <tr><th>Name</th><td>{{ people['name'] }}</td></tr>
+                <tr><th>Email</th><td>{{ people['email'] }}</td></tr>
+                <tr><th>Height</th><td>{{ people['height'] }}</td></tr>
+                <tr><th>Shoe Size</th><td>{{ people['shoe_size'] }}</td></tr>
+            
+                {% if people['status'] %}
+                <tr><th>Status</th><td>{{ people['status'] }}</td></tr>
+                {% endif %}
+            
+                {% if people['pass_type'] %}
+                <tr><th>Pass Type</th><td>{{ people['pass_type'] }}</td></tr>
+                {% endif %}
+            
+                {% if people['boot_size'] %}
+                <tr><th>Boot Size</th><td>{{ people['boot_size'] }}</td></tr>
+                {% endif %}
+            
+                {% if people['ski_length'] %}
+                <tr><th>Ski Length</th><td>{{ people['ski_length'] }}</td></tr>
+                {% endif %}
+            
+                {% if people['pole_height'] %}
+                <tr><th>Pole Height</th><td>{{ people['pole_height'] }}</td></tr>
+                {% endif %}
             </table>
+            
         </div>
 
         <!-- Button to edit person -->

@@ -10,15 +10,70 @@
 <div class="card h-100 hvr-grow" style="width: 18rem;"> <!-- This is the correct card wrapper -->
     <img class="card-img-top" src="{{ url_for('static', filename= 'images/ski-city-images/ski-slope.jpg') }}">
     <div class="card-body">
-        <h4 class="card-title">On the Slopes: {{0}}</h4>
+        <h4 class="card-title">On the Slopes: {{ on_slope_count }}</h4>
     </div>
 </div>
 <div class="card h-100 hvr-grow" style="width: 18rem;"> <!-- This is the correct card wrapper -->
     <img class="card-img-top" src="{{ url_for('static', filename= 'images/ski-city-images/hot-chocolate.jpg') }}">
     <div class="card-body">
-        <h4 class="card-title">In the lodge: {{0}}</h4>
+        <h4 class="card-title">In the lodge: {{ in_lodge_count }}</h4>
     </div>
 </div>
+<h2 class="mt-5">Equipment Availability</h2>
+
+
+<h3>Boots</h3>
+<table class="table table-striped">
+    <thead>
+        <tr><th>Size</th><th>Available</th></tr>
+    </thead>
+    <tbody>
+        {% for boot in boots %}
+            {% if boot.quantity != boot.max_quantity %}
+                <tr>
+                    <td>{{ boot.name }}</td>
+                    <td>{{ boot.quantity }}/{{ boot.max_quantity }}</td>
+                </tr>
+            {% endif %}
+        {% endfor %}
+    </tbody>
+</table>
+
+<h3>Skis</h3>
+<table class="table table-striped">
+    <thead>
+        <tr><th>Size</th><th>Available</th></tr>
+    </thead>
+    <tbody>
+        {% for ski in skis %}
+            {% if ski.quantity != ski.max_quantity %}
+                <tr>
+                    <td>{{ ski.name }}</td>
+                    <td>{{ ski.quantity }}/{{ ski.max_quantity }}</td>
+                </tr>
+            {% endif %}
+        {% endfor %}
+    </tbody>
+</table>
+
+<h3>Poles</h3>
+<table class="table table-striped">
+    <thead>
+        <tr><th>Size</th><th>Available</th></tr>
+    </thead>
+    <tbody>
+        {% for pole in poles %}
+            {% if pole.quantity != pole.max_quantity %}
+                <tr>
+                    <td>{{ pole.name }}</td>
+                    <td>{{ pole.quantity }}/{{ pole.max_quantity }}</td>
+                </tr>
+            {% endif %}
+        {% endfor %}
+    </tbody>
+</table>
+
+
 
 <hr>
 

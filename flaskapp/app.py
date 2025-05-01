@@ -8,7 +8,40 @@ app = Flask(__name__)
 
 @app.route("/")
 def render_index():
-    return render_template("index.html")
+    people = db.get_people()
+
+    # Count guests currently checked in with each pass type
+    on_slope_count = sum(1 for p in people if p.get("status") == "in" and p.get("pass_type") == "Lift Ticket")
+    in_lodge_count = sum(1 for p in people if p.get("status") == "in" and p.get("pass_type") == "Lodge Pass")
+
+    # Load full gear inventory
+    boots = db.get_boots()
+    skis = db.get_skis()
+    poles = db.get_poles()
+
+    rented_boots = [p["boot_size"] for p in people if p["boot_size"]]
+    rented_skis = [p["ski_length"] for p in people if p["ski_length"]]
+    known_pole_heights = {p["height"] for p in poles}
+    rented_poles = [p["pole_height"] for p in people if p["pole_height"] in known_pole_heights]
+
+    for item in boots:
+        item["quantity"] = item["max_quantity"] - rented_boots.count(item["name"])
+    for item in skis:
+        item["quantity"] = item["max_quantity"] - rented_skis.count(item["name"])
+    for item in poles:
+        item["quantity"] = item["max_quantity"] - rented_poles.count(item["height"])
+
+    return render_template(
+        "index.html",
+        on_slope_count=on_slope_count,
+        in_lodge_count=in_lodge_count,
+        boots=boots,
+        skis=skis,
+        poles=poles,
+        miscellaneous=db.get_miscellaneous()
+    )
+
+
 
 @app.route("/people/")
 def render_people():
@@ -90,3 +123,53 @@ def handle_new_equipment():
     db.add_equipment(new_equipment)
     
     return redirect(url_for("render_equipment"))
+
+
+@app.route("/reservations/", methods=["GET", "POST"])
+def render_reservations():
+    people = db.get_people()
+
+    checked_in = [p for p in people if p.get("status") == "in"]
+    not_checked_in = [p for p in people if p.get("status") != "in"]
+
+    start_checkin_id = None
+    if request.method == "POST":
+        start_checkin_id = request.form.get("start_checkin_id")
+
+    return render_template(
+        "reservations.html",
+        checked_in=checked_in,
+        not_checked_in=not_checked_in,
+        start_checkin_id=start_checkin_id
+    )
+
+
+@app.route("/checkin/<person_id>/", methods=["POST"])
+def handle_checkin(person_id):
+    pass_type = request.form.get("pass_type")
+    rent_equipment = request.form.get("rent_equipment")
+
+    boot_size = request.form.get("boot_size") if rent_equipment == "yes" else None
+    ski_length = request.form.get("ski_length") if rent_equipment == "yes" else None
+    pole_height = request.form.get("pole_height") if rent_equipment == "yes" else None
+
+    print("--- CHECK-IN FORM SUBMITTED ---")
+    print("person_id:", person_id)
+    print("pass_type:", pass_type)
+    print("rent_equipment:", rent_equipment)
+    print("boot_size:", boot_size)
+    print("ski_length:", ski_length)
+    print("pole_height:", pole_height)
+
+    db.checkin_guest(person_id, pass_type, boot_size, ski_length, pole_height)
+
+    return redirect(url_for("render_reservations"))
+
+
+
+@app.route("/checkout/<person_id>/", methods=["POST"])
+def handle_checkout(person_id):
+    db.checkout_guest(person_id)
+    return redirect(url_for("render_reservations"))
+
+

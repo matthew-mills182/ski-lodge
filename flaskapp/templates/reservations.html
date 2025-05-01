@@ -1,0 +1,127 @@
+{% extends "base.html" %}
+
+{% block title %}Guest Reservations{% endblock %}
+
+{% block content %}
+<p><strong>DEBUG:</strong> start_checkin_id = {{ start_checkin_id }}</p>
+
+<h1 class="display-4">Guest Reservations</h1>
+<p><a href="{{ url_for('render_index') }}">Home</a> > Guest Reservations</p>
+
+<div class="row">
+    <!-- Check In Column -->
+    <div class="col-md-6">
+        <h3>Check in</h3>
+        <p>Guests who may be checking in with us or who are renting equipment.</p>
+        <ul class="list-group">
+            {% for guest in not_checked_in %}
+            <li class="list-group-item">
+
+                {% if start_checkin_id|string == guest['id']|string %}
+                    <!-- ✅ Show the big full check-in form -->
+                    <form method="POST" action="{{ url_for('handle_checkin', person_id=guest['id']) }}" class="w-100">
+                        <div class="card p-2 mb-2">
+                            <strong>{{ guest['name'] }}</strong>
+            
+                            <!-- Pass Type -->
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="pass_type" value="Lodge Pass" required>
+                                <label class="form-check-label">Lodge Pass</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="pass_type" value="Lift Ticket" required>
+                                <label class="form-check-label">Lift Ticket</label>
+                            </div>
+            
+                            <!-- Rent Equipment -->
+                            <div class="form-group mt-2">
+                                <label for="rent_equipment">Will they rent equipment?</label>
+                                <select name="rent_equipment" class="form-control" required>
+                                    <option value="no">No</option>
+                                    <option value="yes">Yes</option>
+                                </select>
+                            </div>
+            
+                            <!-- Equipment Fields -->
+                            <div class="form-group">
+                                <label>Boot Size (US)</label>
+                                <select name="boot_size" class="form-control">
+                                    <option value="">—</option>
+                                    {% for size in range(6, 14) %}
+                                        <option value="{{ size }}">{{ size }}</option>
+                                    {% endfor %}
+                                </select>
+            
+                                <label>Ski Length</label>
+                                    <select name="ski_length" class="form-control">
+                                        <option value="">—</option>
+                                        <option value="XS">XS</option>
+                                        <option value="S">S</option>
+                                        <option value="M">M</option>
+                                        <option value="L">L</option>
+                                        <option value="XL">XL</option>
+                                        <option value="3XL">3XL</option>
+                                    </select>
+
+            
+                                    <label>Pole Height</label>
+                                    <select name="pole_height" class="form-control">
+                                        <option value="">—</option>
+                                        <option value="36">36</option>
+                                        <option value="38">38</option>
+                                        <option value="40">40</option>
+                                        <option value="42">42</option>
+                                        <option value="44">44</option>
+                                        <option value="46">46</option>
+                                        <option value="48">48</option>
+                                        <option value="50">50</option>
+                                    </select>
+                                    
+                            </div>
+            
+                            <button type="submit" class="btn btn-success btn-sm mt-2">Finish Check-In</button>
+                        </div>
+                    </form>
+            
+                {% else %}
+                    <!-- ✅ Show the small Check-In button -->
+                    <div class="d-flex justify-content-between align-items-center">
+                        {{ guest['name'] }}
+                        <form method="POST" action="{{ url_for('render_reservations') }}">
+                            <input type="hidden" name="start_checkin_id" value="{{ guest['id'] }}">
+                            <button type="submit" class="btn btn-primary btn-sm">Check-in →</button>
+                        </form>
+                    </div>
+                {% endif %}
+            
+            </li>
+            
+            {% endfor %}
+        </ul>
+    </div>
+</div>
+<!-- Check Out Column -->
+<div class="col-md-6">
+    <h3>Check out</h3>
+    <p>Guests who are currently checked-in and may need to return equipment.</p>
+    <ul class="list-group">
+        {% for guest in checked_in %}
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+                <div>
+                    <strong>{{ guest['name'] }}</strong><br>
+                    {{ guest['pass_type'] or "—" }}
+                    {% if guest['boot_size'] or guest['ski_length'] or guest['pole_height'] %}
+                        — {{ guest['boot_size'] or "—" }} US, 
+                        {{ guest['ski_length'] or "—" }}, 
+                        {{ guest['pole_height'] or "—" }}"
+                    {% endif %}
+                </div>
+                <form method="POST" action="{{ url_for('handle_checkout', person_id=guest['id']) }}">
+                    <button type="submit" class="btn btn-primary btn-sm">Check out</button>
+                </form>
+            </li>
+        {% endfor %}
+    </ul>
+</div>
+
+{% endblock %}

@@ -19,17 +19,17 @@ def render_index():
     skis = db.get_skis()
     poles = db.get_poles()
 
-    rented_boots = [p["boot_size"] for p in people if p["boot_size"]]
-    rented_skis = [p["ski_length"] for p in people if p["ski_length"]]
-    known_pole_heights = {p["height"] for p in poles}
-    rented_poles = [p["pole_height"] for p in people if p["pole_height"] in known_pole_heights]
+    rented_boots = [p.get("boot_size") for p in people if p.get("boot_size")]
+    rented_skis = [p.get("ski_length") for p in people if p.get("ski_length")]
+    known_pole_heights = {p.get("height") for p in poles}
+    rented_poles = [p.get("pole_height") for p in people if p.get("pole_height") in known_pole_heights]
 
     for item in boots:
-        item["quantity"] = item["max_quantity"] - rented_boots.count(item["name"])
+        item["quantity"] = item.get("max_quantity", 0) - rented_boots.count(item.get("name"))
     for item in skis:
-        item["quantity"] = item["max_quantity"] - rented_skis.count(item["name"])
+        item["quantity"] = item.get("max_quantity", 0) - rented_skis.count(item.get("name"))
     for item in poles:
-        item["quantity"] = item["max_quantity"] - rented_poles.count(item["height"])
+        item["quantity"] = item.get("max_quantity", 0) - rented_poles.count(item.get("height"))
 
     return render_template(
         "index.html",
@@ -40,7 +40,6 @@ def render_index():
         poles=poles,
         miscellaneous=db.get_miscellaneous()
     )
-
 
 
 @app.route("/people/")
@@ -59,10 +58,10 @@ def edit_person(person_id):
         # Get data from the form
         updated_person = {
             "id": person_id,
-            "name": request.form["name"],
-            "email": request.form["email"],
-            "height": request.form["height"],
-            "shoe_size": request.form["shoe_size"]
+            "name": request.form.get("name"),
+            "email": request.form.get("email"),
+            "height": request.form.get("height"),
+            "shoe_size": request.form.get("shoe_size")
         }
         
         # Call the update function
@@ -75,7 +74,6 @@ def edit_person(person_id):
         # GET request: Display the form with current data
         specific_person = db.get_one_person(person_id)
         return render_template('edit-person.html', person=specific_person)
-
 
 
 @app.route("/equipment/")
@@ -99,10 +97,10 @@ def handle_new_person():
         return render_template("add-person.html")
     
     new_person = {
-        "Name": request.form["name"],
-        "Email": request.form["email"],
-        "Height": request.form["height"],
-        "Shoe Size": request.form["shoe_size"]
+        "name": request.form.get("name"),
+        "email": request.form.get("email"),
+        "height": request.form.get("height"),
+        "shoe_size": request.form.get("shoe_size")
     }
 
     db.add_person(new_person)
@@ -115,9 +113,9 @@ def handle_new_equipment():
         return render_template("add-equipment.html")
     
     new_equipment = {
-        "name": request.form["name"],  
-        "quantity": request.form["number"],  
-        "max_quantity": request.form["number"]  
+        "name": request.form.get("name"),  
+        "quantity": request.form.get("number"),  
+        "max_quantity": request.form.get("number")  
     }
 
     db.add_equipment(new_equipment)
@@ -134,42 +132,4 @@ def render_reservations():
 
     start_checkin_id = None
     if request.method == "POST":
-        start_checkin_id = request.form.get("start_checkin_id")
-
-    return render_template(
-        "reservations.html",
-        checked_in=checked_in,
-        not_checked_in=not_checked_in,
-        start_checkin_id=start_checkin_id
-    )
-
-
-@app.route("/checkin/<person_id>/", methods=["POST"])
-def handle_checkin(person_id):
-    pass_type = request.form.get("pass_type")
-    rent_equipment = request.form.get("rent_equipment")
-
-    boot_size = request.form.get("boot_size") if rent_equipment == "yes" else None
-    ski_length = request.form.get("ski_length") if rent_equipment == "yes" else None
-    pole_height = request.form.get("pole_height") if rent_equipment == "yes" else None
-
-    print("--- CHECK-IN FORM SUBMITTED ---")
-    print("person_id:", person_id)
-    print("pass_type:", pass_type)
-    print("rent_equipment:", rent_equipment)
-    print("boot_size:", boot_size)
-    print("ski_length:", ski_length)
-    print("pole_height:", pole_height)
-
-    db.checkin_guest(person_id, pass_type, boot_size, ski_length, pole_height)
-
-    return redirect(url_for("render_reservations"))
-
-
-
-@app.route("/checkout/<person_id>/", methods=["POST"])
-def handle_checkout(person_id):
-    db.checkout_guest(person_id)
-    return redirect(url_for("render_reservations"))
-
-
+        start_checkin_id = request
